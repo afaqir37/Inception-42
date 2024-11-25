@@ -1,7 +1,7 @@
 NAME = inception
 USER = afaqir
 
-all: setup up
+all: setup hosts up
 
 setup:
 	@sudo mkdir -p /home/$(USER)/data/wordpress
@@ -11,6 +11,12 @@ setup:
 
 up:
 	@docker-compose -f srcs/docker-compose.yml up --build
+
+hosts:
+	if [ -z "$(shell grep "afaqir.42.fr" /etc/hosts)" ]; then \
+        	echo "127.0.0.1 afaqir.42.fr" | sudo tee -a /etc/hosts > /dev/null; \
+    	fi
+
 
 down:
 	@docker-compose -f srcs/docker-compose.yml down
